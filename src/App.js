@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{useState} from 'react';
+import Products from './components/Products';
+import Cards from './components/Cards'
+
 
 function App() {
+  const[data,setData] = useState([])
+  const[products,setProducts] = useState(true)
+
+  const handleAddData = (item) =>{
+    setData([...data,item])
+  }
+
+  const removeData = (item) =>{
+    const newData = data.filter(selectedItem=>{
+      return selectedItem.id !== item.id
+    })
+     setData(newData)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+         <button type="button" className="btn btn-primary btn-lg btn-block" onClick={() => setProducts(true)}>Products</button>
+         <button type="button" className="btn btn-secondary btn-lg btn-block" onClick={() => setProducts(false)}>Cards</button>
+      </div>
+      <span class="badge badge-success">Selected Item: {data.length}</span>
+     
+      {
+        products ? <Products handleAddData={handleAddData} /> : <Cards removeData={removeData} data={data} />
+      }
     </div>
   );
 }
